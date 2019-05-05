@@ -6,24 +6,22 @@ artistas = ['sepultura', 'angra']
 
 lyrics_df = []
 
-# Get all music from all albuns
-for artista in artistas:
-    albums = PyLyrics.getAlbums(singer=artista)
+for artist in artistas:
+    # Get all albuns
+    albums = PyLyrics.getAlbums(singer=artist)
 
-    for i in range(len(albums)):
-        myalbum = albums[i]
-        tracks = myalbum.tracks()
+    for album in albums:
+        tracks = album.tracks()
 
         for track in tracks:
             lyrics = track.getLyrics()
-            lyrics_df.append((artista, myalbum, lyrics))
+            music_name = track.name
+            lyrics_df.append((artist, album, music_name, lyrics))
+            print(f'Artist: {artist}, Album: {album}, Music Name: {music_name}')
+
 
 # Build DF
 df_lyrics = pd.DataFrame(lyrics_df)
-
-# Check shape and format
-print(df_lyrics.shape)
-print(df_lyrics.head(5))
 
 # Dump to CSV
 df_lyrics.to_csv('rebirth-remains.csv')
